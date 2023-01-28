@@ -1,0 +1,161 @@
+{
+  "name": "@ipfs/public-gateway-checker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Checks which public gateways are online or not",
+  "author": "Marcin Rataj <lidel@lidel.org>",
+  "license": "Apache-2.0 OR MIT",
+  "homepage": "https://github.com/ipfs/public-gateway-checker#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipfs/public-gateway-checker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ipfs/public-gateway-checker/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
+  "main": "src/index.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "eslintConfig": {
+    "extends": "ipfs"
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits",
+          "releaseRules": [
+            {
+              "breaking": true,
+              "release": "major"
+            },
+            {
+              "revert": true,
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "docs",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "scope": "no-release",
+              "release": false
+            }
+          ]
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits",
+          "presetConfig": {
+            "types": [
+              {
+                "type": "feat",
+                "section": "Features"
+              },
+              {
+                "type": "fix",
+                "section": "Bug Fixes"
+              },
+              {
+                "type": "chore",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "docs",
+                "section": "Trivial Changes"
+              },
+              {
+                "type": "test",
+                "section": "Tests"
+              }
+            ]
+          }
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  },
+  "scripts": {
+    "start": "npm run build && npx -y serve -l 3000 dist",
+    "copy-assets": "cp-cli src/index.html dist/index.html && cp-cli src/styles.css dist/styles.css",
+    "lint": "aegir lint && npx -y standard && node scripts/beautify.mjs",
+    "lint:fix": "aegir lint --fix && npx -y standard --fix && node scripts/beautify.mjs --fix",
+    "release": "aegir release",
+    "sw": "node scripts/build-sw.mjs",
+    "build": "aegir build && npm run copy-assets && npm run sw",
+    "test-TBD": "aegir test",
+    "test-TBD:node": "aegir test --target node",
+    "test-TBD:browser": "aegir test --target browser"
+  },
+  "dependencies": {
+    "@dutu/rate-limiter": "github:dutu/rate-limiter#v1.3.1",
+    "countly-sdk-web": "^22.6.2",
+    "ipfs-http-client": "^58.0.1",
+    "url-ponyfill": "^0.5.10"
+  },
+  "devDependencies": {
+    "aegir": "^37.5.6",
+    "browserslist": "^4.21.4",
+    "check-aegir-project": "^1.1.1",
+    "cp-cli": "^2.0.0",
+    "eslint-config-ipfs": "^3.1.2",
+    "eslint-plugin-compat": "^4.0.2",
+    "fetch-ponyfill": "^7.1.0",
+    "ipfs": "^0.65.0",
+    "ipfs-geoip": "^9.0.0",
+    "js-beautify": "^1.14.7",
+    "typescript": "^4.8.4",
+    "workbox-build": "6.5.4",
+    "workbox-window": "6.5.4"
+  },
+  "aegir": {
+    "tsRepo": true,
+    "release": {
+      "build": false
+    },
+    "docs": {
+      "publish": true,
+      "entryPoint": "src/index.ts"
+    }
+  },
+  "browserslist": [
+    "defaults",
+    "not op_mini all",
+    "not IE 11"
+  ],
+  "todo": [
+    "add browserlist support",
+    "Add eslint"
+  ]
+}
